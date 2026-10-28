@@ -1110,6 +1110,7 @@ describe("tool.shell abort", () => {
             expect(result.output).toContain("before-stdout")
             expect(result.output).toContain("before-stderr")
             expect(result.output).toContain(`SIG${signal}`)
+            expect(result.metadata.output).toBe(result.output)
             expect(result.output).not.toContain("exceeding timeout")
             expect(result.output).not.toContain("User aborted")
             expect(result.metadata.exit).toBeNull()

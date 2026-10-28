@@ -235,21 +235,14 @@ describe("opencode run (non-interactive subprocess)", () => {
 
           opencode.expectExit(result, 0)
           const events = opencode.parseJsonEvents(result.stdout)
-          expect(events.find((event) => event.type === "tool_use")?.part).toEqual(
-            expect.objectContaining({
-              tool: "bash",
-              state: expect.objectContaining({
-                status: "completed",
-                output: expect.stringContaining("before-signal"),
-                metadata: expect.objectContaining({ exit: null }),
-              }),
-            }),
-          )
-          expect(events.find((event) => event.type === "tool_use")?.part).toEqual(
-            expect.objectContaining({
-              state: expect.objectContaining({ output: expect.stringContaining("SIGTERM") }),
-            }),
-          )
+          expect(events.find((event) => event.type === "tool_use")?.part).toMatchObject({
+            tool: "bash",
+            state: {
+              status: "completed",
+              output: expect.stringMatching(/before-signal[\s\S]*SIGTERM/),
+              metadata: { exit: null, output: expect.stringContaining("SIGTERM") },
+            },
+          })
           expect(result.stdout).toContain("continued after signal")
           expect(result.stdout).not.toContain("ChildProcess.kill")
           expect(result.stdout).not.toContain("exceeding timeout")
