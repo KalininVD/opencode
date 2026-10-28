@@ -20,7 +20,7 @@ describe("source syntax", () => {
     expect(await error(`const = 1`)).toEqual({
       kind: "ParseError",
       message:
-        "SyntaxError: Unexpected token. Code must be plain JavaScript written as a program body; TypeScript syntax isn't supported. (line 1, col 7)",
+        "SyntaxError: Unexpected token. Code must be plain JavaScript written as a program body. (line 1, col 7)",
       location: { line: 1, column: 7 },
     })
   })
@@ -40,14 +40,14 @@ describe("source syntax", () => {
   test("rejects TypeScript-only syntax", async () => {
     const failure = await error(`const value: number = 1; return value`)
     expect(failure.kind).toBe("ParseError")
-    expect(failure.message).toEndWith("TypeScript syntax isn't supported. (line 1, col 12)")
+    expect(failure.message).toEndWith("Code must be plain JavaScript written as a program body. (line 1, col 12)")
     expect(failure.location).toEqual({ line: 1, column: 12 })
   })
 
   test("locates a syntax error on a later line", async () => {
     const failure = await error("const a = 1\nconst b = 2\nreturn a +* b")
     expect(failure.message).toBe(
-      "SyntaxError: Unexpected token. Code must be plain JavaScript written as a program body; TypeScript syntax isn't supported. (line 3, col 11)",
+      "SyntaxError: Unexpected token. Code must be plain JavaScript written as a program body. (line 3, col 11)",
     )
     expect(failure.location).toEqual({ line: 3, column: 11 })
   })

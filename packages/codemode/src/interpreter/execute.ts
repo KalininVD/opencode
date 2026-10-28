@@ -141,7 +141,7 @@ const parseDiagnostic = (error: typeof AcornError.Type): Diagnostic => {
   const text =
     reason === "'import' and 'export' may appear only with 'sourceType: module'"
       ? "Imports and exports aren't available. Call tools through `tools` and use the built-in globals."
-      : `${reason.endsWith(".") ? reason : `${reason}.`} Code must be plain JavaScript written as a program body; TypeScript syntax isn't supported.`
+      : `${reason.endsWith(".") ? reason : `${reason}.`} Code must be plain JavaScript written as a program body.`
   return { kind: "ParseError", message: `SyntaxError: ${text}${formatLocation(location)}`, location }
 }
 
